@@ -250,8 +250,8 @@ placeholder="🔍 Search semua data">
 <option value="">Jabatan</option>
 </select>
 
-<select id="fRK">
-<option value="">Kode RK</option>
+<select id="fIK">
+<option value="">Kode IK</option>
 </select>
 
 <select id="fPeran">
@@ -497,8 +497,8 @@ document.getElementById("fNama").value;
 let jab =
 document.getElementById("fJabatan").value;
 
-let rk =
-document.getElementById("fRK").value;
+let ik =
+document.getElementById("fIK").value;
 
 let peran =
 document.getElementById("fPeran").value;
@@ -523,7 +523,7 @@ return (
 
 (!nama || d.Nama === nama) &&
 (!jab || d.Jabatan === jab) &&
-(!rk || d["Kode RK"] === rk) &&
+(!ik || d["Kode IK"] === ik) &&
 (!peran || d.Peran === peran) &&
 (!bukti || getBukti(d) === bukti) &&
 (!akses || getAkses(d) === akses) &&
@@ -545,7 +545,7 @@ function resetFilter(){
 document.getElementById("search").value = "";
 document.getElementById("fNama").value = "";
 document.getElementById("fJabatan").value = "";
-document.getElementById("fRK").value = "";
+document.getElementById("fIK").value = "";
 document.getElementById("fPeran").value = "";
 document.getElementById("fBukti").value = "";
 document.getElementById("fAkses").value = "";
@@ -563,7 +563,7 @@ function refreshDropdowns(){
 
 updateDropdown("Nama","fNama");
 updateDropdown("Jabatan","fJabatan");
-updateDropdown("Kode RK","fRK");
+updateDropdown("Kode IK","fIK");
 updateDropdown("Peran","fPeran");
 
 }
@@ -882,7 +882,7 @@ function fillDropdown(){
 
 fill("Nama","fNama");
 fill("Jabatan","fJabatan");
-fill("Kode RK","fRK");
+fill("Kode IK","fIK");
 fill("Peran","fPeran");
 
 }
