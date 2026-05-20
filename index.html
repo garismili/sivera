@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>SIVERA - SISTEM VERIFIKASI KINERJA</title>
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
@@ -11,7 +10,6 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 <style>
-
 body{
   margin:0;
   font-family:Arial;
@@ -20,7 +18,7 @@ body{
 
 header{
   background:#0984e3;
-  color:white;
+  color:#fff;
   padding:15px;
   font-size:22px;
   font-weight:bold;
@@ -34,7 +32,7 @@ header{
 }
 
 .box{
-  background:white;
+  background:#fff;
   border-radius:14px;
   padding:14px;
   margin-bottom:14px;
@@ -64,7 +62,7 @@ input,select,button{
 
 button{
   background:#0984e3;
-  color:white;
+  color:#fff;
   border:none;
   cursor:pointer;
 }
@@ -134,7 +132,6 @@ button{
   flex-wrap:wrap;
 }
 
-/* TAMBAHAN BARU */
 .chart-controls{
   display:flex;
   gap:10px;
@@ -183,7 +180,7 @@ th,td{
 
 th{
   background:#0984e3;
-  color:white;
+  color:#fff;
   position:sticky;
   top:150px;
 }
@@ -202,6 +199,15 @@ tr:hover{
   font-weight:bold;
 }
 
+/* KOLOM POTONG 1 BARIS */
+.ellipsis{
+  max-width:220px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  cursor:pointer;
+}
+
 .pagination{
   display:flex;
   justify-content:space-between;
@@ -218,15 +224,12 @@ tr:hover{
   font-size:24px;
   z-index:99999;
 }
-
 </style>
 </head>
 
 <body>
 
-<div id="loading" class="loading">
-⏳ Loading Dashboard...
-</div>
+<div id="loading" class="loading">⏳ Loading Dashboard...</div>
 
 <header>
 📊 SIVERA - SISTEM VERIFIKASI KINERJA
@@ -236,155 +239,136 @@ tr:hover{
 
 <!-- FILTER -->
 <div class="box filter-box">
-
 <div class="grid">
 
-<input id="search"
-placeholder="🔍 Search semua data">
+<input id="search" placeholder="🔍 Search semua data">
 
 <select id="fNama">
-<option value="">Nama</option>
+  <option value="">Nama</option>
 </select>
 
 <select id="fJabatan">
-<option value="">Jabatan</option>
+  <option value="">Jabatan</option>
 </select>
 
+<!-- GANTI KODE IK -->
 <select id="fIK">
-<option value="">Kode IK</option>
+  <option value="">Deskripsi IK</option>
 </select>
 
-<select id="fPeran">
-<option value="">Peran</option>
+<!-- GANTI PERAN -->
+<select id="fRK">
+  <option value="">Deskripsi RK</option>
 </select>
 
 <select id="fBukti">
-<option value="">Bukti</option>
-<option value="Tersedia">Tersedia</option>
-<option value="Tidak Tersedia">Tidak Tersedia</option>
+  <option value="">Bukti</option>
+  <option value="Tersedia">Tersedia</option>
+  <option value="Tidak Tersedia">Tidak Tersedia</option>
 </select>
 
 <select id="fAkses">
-<option value="">Akses</option>
-<option value="Dapat Diakses">Dapat Diakses</option>
-<option value="Tidak Dapat">Tidak Dapat</option>
+  <option value="">Akses</option>
+  <option value="Dapat Diakses">Dapat Diakses</option>
+  <option value="Tidak Dapat">Tidak Dapat</option>
 </select>
 
 <select id="fSesuai">
-<option value="">Kesesuaian</option>
-<option value="Sesuai">Sesuai</option>
-<option value="Tidak Sesuai">Tidak Sesuai</option>
+  <option value="">Kesesuaian</option>
+  <option value="Sesuai">Sesuai</option>
+  <option value="Tidak Sesuai">Tidak Sesuai</option>
 </select>
 
-<button onclick="exportExcel()">
-📦 Export Excel
-</button>
-
-<button onclick="resetFilter()">
-🔄 Reset Filter
-</button>
+<button onclick="exportExcel()">📦 Export Excel</button>
+<button onclick="resetFilter()">🔄 Reset Filter</button>
 
 </div>
 </div>
 
 <!-- FOTO + CARD -->
 <div class="box top">
+  <div class="photo">
+    <img src="office.jpeg">
+  </div>
 
-<div class="photo">
-<img src="office.jpeg">
-</div>
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-title">Total Data</div>
+      <div class="stat-value" id="totalData">0</div>
+    </div>
 
-<div class="stats">
+    <div class="stat">
+      <div class="stat-title">Total Jabatan</div>
+      <div class="stat-value" id="totalJabatan">0</div>
+    </div>
 
-<div class="stat">
-<div class="stat-title">Total Data</div>
-<div class="stat-value" id="totalData">0</div>
-</div>
+    <div class="stat">
+      <div class="stat-title">Total Peran</div>
+      <div class="stat-value" id="totalPeran">0</div>
+    </div>
 
-<div class="stat">
-<div class="stat-title">Total Jabatan</div>
-<div class="stat-value" id="totalJabatan">0</div>
-</div>
+    <div class="stat">
+      <div class="stat-title">% Bukti Tersedia</div>
+      <div class="stat-value" id="persenBukti">0%</div>
+      <div class="progress"><div id="barBukti"></div></div>
+    </div>
 
-<div class="stat">
-<div class="stat-title">Total Peran</div>
-<div class="stat-value" id="totalPeran">0</div>
-</div>
+    <div class="stat">
+      <div class="stat-title">% Dapat Diakses</div>
+      <div class="stat-value" id="persenAkses">0%</div>
+      <div class="progress"><div id="barAkses"></div></div>
+    </div>
 
-<div class="stat">
-<div class="stat-title">% Bukti Tersedia</div>
-<div class="stat-value" id="persenBukti">0%</div>
-<div class="progress"><div id="barBukti"></div></div>
-</div>
-
-<div class="stat">
-<div class="stat-title">% Dapat Diakses</div>
-<div class="stat-value" id="persenAkses">0%</div>
-<div class="progress"><div id="barAkses"></div></div>
-</div>
-
-<div class="stat">
-<div class="stat-title">% Sesuai</div>
-<div class="stat-value" id="persenSesuai">0%</div>
-<div class="progress"><div id="barSesuai"></div></div>
-</div>
-
-</div>
+    <div class="stat">
+      <div class="stat-title">% Sesuai</div>
+      <div class="stat-value" id="persenSesuai">0%</div>
+      <div class="progress"><div id="barSesuai"></div></div>
+    </div>
+  </div>
 </div>
 
 <!-- CHART -->
 <div class="chart-wrapper">
+  <div class="box chart-box">
+    <h3>📊 Grafik Dinamis</h3>
 
-<div class="box chart-box">
+    <div class="chart-controls">
+      <select id="chartX">
+        <option value="Nama">Nama</option>
+        <option value="Jabatan">Jabatan</option>
+        <option value="Deskripsi IK">Deskripsi IK</option>
+        <option value="Deskripsi RK">Deskripsi RK</option>
+      </select>
 
-<h3>📊 Grafik Dinamis</h3>
+      <select id="chartType">
+        <option value="bar">Bar</option>
+        <option value="pie">Pie</option>
+        <option value="doughnut">Doughnut</option>
+        <option value="line">Line</option>
+      </select>
+    </div>
 
-<div class="chart-controls">
+    <div class="chart-container">
+      <canvas id="chart"></canvas>
+    </div>
+  </div>
 
-<select id="chartX">
-<option value="Nama">Nama</option>
-<option value="Jabatan">Jabatan</option>
-<option value="Peran">Peran</option>
-<option value="Kode RK">Kode RK</option>
-</select>
-
-<select id="chartType">
-<option value="bar">Bar</option>
-<option value="pie">Pie</option>
-<option value="doughnut">Doughnut</option>
-<option value="line">Line</option>
-</select>
-
-</div>
-
-<div class="chart-container">
-<canvas id="chart"></canvas>
-</div>
-
-</div>
-
-<div class="box ranking-box">
-
-<h3>🧠 Pegawai Paling Aktif</h3>
-
-<div id="ranking"></div>
-
-</div>
+  <div class="box ranking-box">
+    <h3>🧠 Pegawai Paling Aktif</h3>
+    <div id="ranking"></div>
+  </div>
 </div>
 
 <!-- TABLE -->
 <div class="box">
-
 <table>
-
 <thead>
 <tr>
 <th>No</th>
 <th>Nama</th>
 <th>Jabatan</th>
-<th>Kode IK</th>
-<th>Kode RK</th>
-<th>Peran</th>
+<th>Deskripsi IK</th>
+<th>Deskripsi RK</th>
 <th>Realisasi</th>
 <th>Bukti</th>
 <th>Akses</th>
@@ -394,26 +378,15 @@ placeholder="🔍 Search semua data">
 </thead>
 
 <tbody id="tbody"></tbody>
-
 </table>
 
 <div class="pagination">
-
-<button onclick="prevPage()">
-⬅ Prev
-</button>
-
-<button onclick="nextPage()">
-Next ➡
-</button>
-
-</div>
-
+  <button onclick="prevPage()">⬅ Prev</button>
+  <button onclick="nextPage()">Next ➡</button>
 </div>
 </div>
 
 <script>
-
 const URL =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vSLqPUChsqkmiZqSu8Bz39_147RQmqFhURgQPU_xwNgsESybyziPW2EZxJ_5IjG9fYuIC07sywJqcuE/pub?output=csv";
 
@@ -424,521 +397,532 @@ let chart;
 let page = 1;
 const perPage = 30;
 
-const norm = v =>
-(v || "").toLowerCase().trim();
+const norm = v => (v || "").toLowerCase().trim();
 
 /* LOAD */
 Papa.parse(URL,{
-download:true,
-header:true,
+  download:true,
+  header:true,
+  complete:r=>{
+    all = r.data.filter(d=>d.Nama);
+    filtered = all;
+    fillDropdown();
+    render();
 
-complete:r=>{
-
-all =
-r.data.filter(d=>d.Nama);
-
-filtered = all;
-
-fillDropdown();
-
-render();
-
-document.getElementById("loading")
-.style.display = "none";
-
-}
+    document.getElementById("loading").style.display="none";
+  }
 });
 
-/* BACA KOLOM */
+/* ===== BACA KOLOM ===== */
+/* H */
 function getBukti(d){
-
-let val =
-Object.values(d)[7] || "";
-
-return norm(val) === "true"
-? "Tersedia"
-: "Tidak Tersedia";
+  let val = Object.values(d)[7] || "";
+  return norm(val) === "true"
+    ? "Tersedia"
+    : "Tidak Tersedia";
 }
 
+/* I */
 function getAkses(d){
-
-let val =
-Object.values(d)[8] || "";
-
-return norm(val) === "true"
-? "Dapat Diakses"
-: "Tidak Dapat";
+  let val = Object.values(d)[8] || "";
+  return norm(val) === "true"
+    ? "Dapat Diakses"
+    : "Tidak Dapat";
 }
 
+/* J */
 function getKesesuaian(d){
-
-return (
-Object.values(d)[9] || "-"
-).trim();
+  return (Object.values(d)[9] || "-").trim();
 }
+
+/* L */
+function getIK(d){
+  return (
+    d["Deskripsi IK"] ||
+    Object.values(d)[11] ||
+    "-"
+  ).trim();
+}
+
+/* M */
+function getRK(d){
+  return (
+    d["Deskripsi RK"] ||
+    Object.values(d)[12] ||
+    "-"
+  ).trim();
+}
+
+/* FILTER EVENT */
+document.addEventListener("input",()=>{
+  page = 1;
+  applyFilter();
+});
+
+document.addEventListener("change",()=>{
+  page = 1;
+  applyFilter();
+});
 
 /* FILTER */
-document.addEventListener("input",()=>{
-
-page = 1;
-
-applyFilter();
-
-});
-
 function applyFilter(){
 
-let search =
-norm(document.getElementById("search").value);
+  let search =
+    norm(document.getElementById("search").value);
 
-let nama =
-document.getElementById("fNama").value;
+  let nama =
+    document.getElementById("fNama").value;
 
-let jab =
-document.getElementById("fJabatan").value;
+  let jab =
+    document.getElementById("fJabatan").value;
 
-let ik =
-document.getElementById("fIK").value;
+  let ik =
+    document.getElementById("fIK").value;
 
-let peran =
-document.getElementById("fPeran").value;
+  let rk =
+    document.getElementById("fRK").value;
 
-let bukti =
-document.getElementById("fBukti").value;
+  let bukti =
+    document.getElementById("fBukti").value;
 
-let akses =
-document.getElementById("fAkses").value;
+  let akses =
+    document.getElementById("fAkses").value;
 
-let sesuai =
-document.getElementById("fSesuai").value;
+  let sesuai =
+    document.getElementById("fSesuai").value;
 
-filtered = all.filter(d=>{
+  filtered = all.filter(d=>{
 
-let gabung =
-Object.values(d)
-.join(" ")
-.toLowerCase();
+    let gabung =
+      Object.values(d)
+      .join(" ")
+      .toLowerCase();
 
-return (
+    return(
+      (!nama || d.Nama === nama) &&
+      (!jab || d.Jabatan === jab) &&
+      (!ik || getIK(d) === ik) &&
+      (!rk || getRK(d) === rk) &&
+      (!bukti || getBukti(d) === bukti) &&
+      (!akses || getAkses(d) === akses) &&
+      (!sesuai || getKesesuaian(d) === sesuai) &&
+      (!search || gabung.includes(search))
+    );
 
-(!nama || d.Nama === nama) &&
-(!jab || d.Jabatan === jab) &&
-(!ik || d["Kode IK"] === ik) &&
-(!peran || d.Peran === peran) &&
-(!bukti || getBukti(d) === bukti) &&
-(!akses || getAkses(d) === akses) &&
-(!sesuai || getKesesuaian(d) === sesuai) &&
-(!search || gabung.includes(search))
+  });
 
-);
-
-});
-
-refreshDropdowns();
-
-render();
+  refreshDropdowns();
+  render();
 }
 
 /* RESET */
 function resetFilter(){
+  document.getElementById("search").value="";
+  document.getElementById("fNama").value="";
+  document.getElementById("fJabatan").value="";
+  document.getElementById("fIK").value="";
+  document.getElementById("fRK").value="";
+  document.getElementById("fBukti").value="";
+  document.getElementById("fAkses").value="";
+  document.getElementById("fSesuai").value="";
 
-document.getElementById("search").value = "";
-document.getElementById("fNama").value = "";
-document.getElementById("fJabatan").value = "";
-document.getElementById("fIK").value = "";
-document.getElementById("fPeran").value = "";
-document.getElementById("fBukti").value = "";
-document.getElementById("fAkses").value = "";
-document.getElementById("fSesuai").value = "";
+  filtered = all;
+  page = 1;
 
-filtered = all;
-
-refreshDropdowns();
-
-render();
+  refreshDropdowns();
+  render();
 }
 
 /* FILTER DINAMIS */
 function refreshDropdowns(){
-
-updateDropdown("Nama","fNama");
-updateDropdown("Jabatan","fJabatan");
-updateDropdown("Kode IK","fIK");
-updateDropdown("Peran","fPeran");
-
+  updateDropdown("Nama","fNama");
+  updateDropdown("Jabatan","fJabatan");
+  updateDropdownCustom(getIK,"fIK","Deskripsi IK");
+  updateDropdownCustom(getRK,"fRK","Deskripsi RK");
 }
 
 function updateDropdown(field,id){
 
-let current =
-document.getElementById(id).value;
+  let current =
+    document.getElementById(id).value;
 
-let select =
-document.getElementById(id);
+  let select =
+    document.getElementById(id);
 
-let values =
-[...new Set(
-filtered
-.map(d => d[field])
-.filter(Boolean)
-)].sort();
+  let values =
+    [...new Set(
+      filtered
+      .map(d=>d[field])
+      .filter(Boolean)
+    )].sort();
 
-select.innerHTML =
-`<option value="">${field}</option>`;
+  select.innerHTML =
+    `<option value="">${field}</option>`;
 
-values.forEach(v => {
+  values.forEach(v=>{
+    select.innerHTML +=
+      `<option value="${v}">${v}</option>`;
+  });
 
-select.innerHTML += `
-<option value="${v}">
-${v}
-</option>
-`;
-
-});
-
-if(values.includes(current)){
-select.value = current;
+  if(values.includes(current)){
+    select.value = current;
+  }
 }
+
+function updateDropdownCustom(fn,id,label){
+
+  let current =
+    document.getElementById(id).value;
+
+  let select =
+    document.getElementById(id);
+
+  let values =
+    [...new Set(
+      filtered
+      .map(d=>fn(d))
+      .filter(Boolean)
+    )].sort();
+
+  select.innerHTML =
+    `<option value="">${label}</option>`;
+
+  values.forEach(v=>{
+    select.innerHTML +=
+      `<option value="${v}">${v}</option>`;
+  });
+
+  if(values.includes(current)){
+    select.value = current;
+  }
 }
 
 /* RENDER */
 function render(){
-
-renderTable();
-renderStats();
-renderChart();
-renderRanking();
-
+  renderTable();
+  renderStats();
+  renderChart();
+  renderRanking();
 }
 
 /* TABLE */
 function renderTable(){
 
-let tbody =
-document.getElementById("tbody");
+  let tbody =
+    document.getElementById("tbody");
 
-tbody.innerHTML = "";
+  tbody.innerHTML = "";
 
-let start =
-(page - 1) * perPage;
+  let start =
+    (page-1) * perPage;
 
-let data =
-filtered.slice(start,start+perPage);
+  let data =
+    filtered.slice(start,start+perPage);
 
-data.forEach(d=>{
+  data.forEach(d=>{
 
-let bukti =
-getBukti(d);
+    let bukti = getBukti(d);
+    let akses = getAkses(d);
+    let sesuai = getKesesuaian(d);
 
-let akses =
-getAkses(d);
+    tbody.innerHTML += `
+    <tr>
+      <td>${d.No || "-"}</td>
+      <td>${d.Nama || "-"}</td>
+      <td>${d.Jabatan || "-"}</td>
+      <td class="ellipsis" title="${getIK(d)}">
+        ${getIK(d)}
+      </td>
+      <td class="ellipsis" title="${getRK(d)}">
+        ${getRK(d)}
+      </td>
 
-let sesuai =
-getKesesuaian(d);
-
-tbody.innerHTML += `
-
-<tr>
-
-<td>${d.No || "-"}</td>
-
-<td>${d.Nama || "-"}</td>
-
-<td>${d.Jabatan || "-"}</td>
-
-<td>${d["Kode IK"] || "-"}</td>
-
-<td>${d["Kode RK"] || "-"}</td>
-
-<td>${d.Peran || "-"}</td>
-
-<td>${d["Realisasi Kinerja"] || "-"}</td>
-
-<td class="${
-bukti === "Tersedia"
-? "true"
-: "false"
-}">
-${bukti}
+<td class="ellipsis" title="${d["Realisasi Kinerja"] || "-"}">
+  ${d["Realisasi Kinerja"] || "-"}
 </td>
 
-<td class="${
-akses === "Dapat Diakses"
-? "true"
-: "false"
-}">
-${akses}
-</td>
+      <td class="${
+        bukti === "Tersedia"
+        ? "true" : "false"
+      }">${bukti}</td>
 
-<td>${sesuai}</td>
+      <td class="${
+        akses === "Dapat Diakses"
+        ? "true" : "false"
+      }">${akses}</td>
 
-<td>
-${
-d.Link
-? `<a href="${d.Link}" target="_blank">Open</a>`
-: "-"
-}
-</td>
+      <td>${sesuai}</td>
 
-</tr>
+      <td>
+      ${
+        d.Link
+        ? `<a href="${d.Link}" target="_blank">Open</a>`
+        : "-"
+      }
+      </td>
+    </tr>
+    `;
+  });
 
-`;
-
-});
 }
 
 /* CARD */
 function renderStats(){
 
-document.getElementById("totalData")
-.innerText = filtered.length;
+  document.getElementById("totalData")
+    .innerText = filtered.length;
 
-document.getElementById("totalJabatan")
-.innerText =
-new Set(filtered.map(d=>d.Jabatan)).size;
+  document.getElementById("totalJabatan")
+    .innerText =
+      new Set(
+        filtered.map(d=>d.Jabatan)
+      ).size;
 
-document.getElementById("totalPeran")
-.innerText =
-new Set(filtered.map(d=>d.Peran)).size;
+  /* tetap unik dari RK */
+  document.getElementById("totalPeran")
+    .innerText =
+      new Set(
+        filtered.map(d=>getRK(d))
+      ).size;
 
-let total =
-filtered.length || 1;
+  let total =
+    filtered.length || 1;
 
-let bukti =
-filtered.filter(d =>
-getBukti(d) === "Tersedia"
-).length;
+  let bukti =
+    filtered.filter(d =>
+      getBukti(d)==="Tersedia"
+    ).length;
 
-let akses =
-filtered.filter(d =>
-getAkses(d) === "Dapat Diakses"
-).length;
+  let akses =
+    filtered.filter(d =>
+      getAkses(d)==="Dapat Diakses"
+    ).length;
 
-let sesuai =
-filtered.filter(d =>
-norm(getKesesuaian(d))
-=== "sesuai"
-).length;
+  let sesuai =
+    filtered.filter(d =>
+      norm(getKesesuaian(d))==="sesuai"
+    ).length;
 
-let pb =
-((bukti/total)*100).toFixed(1);
+  let pb =
+    ((bukti/total)*100).toFixed(1);
 
-let pa =
-((akses/total)*100).toFixed(1);
+  let pa =
+    ((akses/total)*100).toFixed(1);
 
-let ps =
-((sesuai/total)*100).toFixed(1);
+  let ps =
+    ((sesuai/total)*100).toFixed(1);
 
-document.getElementById("persenBukti")
-.innerText = pb + "%";
+  document.getElementById("persenBukti").innerText = pb+"%";
+  document.getElementById("persenAkses").innerText = pa+"%";
+  document.getElementById("persenSesuai").innerText = ps+"%";
 
-document.getElementById("persenAkses")
-.innerText = pa + "%";
-
-document.getElementById("persenSesuai")
-.innerText = ps + "%";
-
-document.getElementById("barBukti")
-.style.width = pb + "%";
-
-document.getElementById("barAkses")
-.style.width = pa + "%";
-
-document.getElementById("barSesuai")
-.style.width = ps + "%";
-
+  document.getElementById("barBukti").style.width = pb+"%";
+  document.getElementById("barAkses").style.width = pa+"%";
+  document.getElementById("barSesuai").style.width = ps+"%";
 }
 
 /* CHART */
 function renderChart(){
 
-let field =
-document.getElementById("chartX").value;
+  let field =
+    document.getElementById("chartX").value;
 
-let type =
-document.getElementById("chartType").value;
+  let type =
+    document.getElementById("chartType").value;
 
-let count = {};
+  let count = {};
 
-filtered.forEach(d=>{
+  filtered.forEach(d=>{
 
-let val =
-d[field] || "-";
+    let val = "-";
 
-count[val] =
-(count[val] || 0) + 1;
+    if(field==="Deskripsi IK"){
+      val = getIK(d);
+    }else if(field==="Deskripsi RK"){
+      val = getRK(d);
+    }else{
+      val = d[field] || "-";
+    }
 
-});
+    count[val] =
+      (count[val] || 0) + 1;
+  });
 
-let labels =
-Object.keys(count);
+  let labels =
+    Object.keys(count);
 
-let values =
-Object.values(count);
+  let values =
+    Object.values(count);
 
-let ctx =
-document.getElementById("chart");
+  let ctx =
+    document.getElementById("chart");
 
-if(chart) chart.destroy();
+  if(chart) chart.destroy();
 
-chart = new Chart(ctx,{
+  chart = new Chart(ctx,{
+    type:type,
+    data:{
+      labels:labels,
+      datasets:[{
+        label:field,
+        data:values
+      }]
+    },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false
+    }
+  });
 
-type:type,
-
-data:{
-labels:labels,
-
-datasets:[{
-label:field,
-data:values
-}]
-},
-
-options:{
-responsive:true,
-maintainAspectRatio:false
 }
 
-});
-}
-
-/* RANKING */
+/* RANKING UNIK */
 function renderRanking(){
 
-let count = {};
-let uniqueActivity = new Set();
+  let count = {};
+  let uniqueActivity = new Set();
 
-filtered.forEach(d => {
+  filtered.forEach(d=>{
 
-let nama =
-(d.Nama || "-").trim();
+    let nama =
+      (d.Nama || "-").trim();
 
-let realisasi =
-(d["Realisasi Kinerja"] || "-").trim();
+    let realisasi =
+      (d["Realisasi Kinerja"] || "-").trim();
 
-let key =
-nama + "||" + realisasi;
+    let key =
+      nama + "||" + realisasi;
 
-if(uniqueActivity.has(key)) return;
+    if(uniqueActivity.has(key)) return;
 
-uniqueActivity.add(key);
+    uniqueActivity.add(key);
 
-count[nama] =
-(count[nama] || 0) + 1;
+    count[nama] =
+      (count[nama] || 0) + 1;
+  });
 
-});
+  let arr =
+    Object.entries(count)
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,10);
 
-let arr =
-Object.entries(count)
-.sort((a,b)=>b[1]-a[1])
-.slice(0,10);
-
-document.getElementById("ranking")
-.innerHTML =
-
-arr.map((v,i)=>`
-
-<div class="ranking-item">
-
-${i+1}. <b>${v[0]}</b>
-
-<br>
-
-${v[1]} aktivitas unik
-
-</div>
-
-`).join("");
-
+  document.getElementById("ranking")
+    .innerHTML =
+      arr.map((v,i)=>`
+      <div class="ranking-item">
+        ${i+1}. <b>${v[0]}</b><br>
+        ${v[1]} aktivitas unik
+      </div>
+      `).join("");
 }
 
 /* PAGINATION */
 function nextPage(){
-
-if(page <
-Math.ceil(filtered.length/perPage)
-){
-
-page++;
-
-renderTable();
-
-}
+  if(
+    page <
+    Math.ceil(filtered.length/perPage)
+  ){
+    page++;
+    renderTable();
+  }
 }
 
 function prevPage(){
-
-if(page > 1){
-
-page--;
-
-renderTable();
-
-}
+  if(page > 1){
+    page--;
+    renderTable();
+  }
 }
 
-/* DROPDOWN */
+/* DROPDOWN AWAL */
 function fillDropdown(){
-
-fill("Nama","fNama");
-fill("Jabatan","fJabatan");
-fill("Kode IK","fIK");
-fill("Peran","fPeran");
-
+  fill("Nama","fNama");
+  fill("Jabatan","fJabatan");
+  fillCustom(getIK,"fIK");
+  fillCustom(getRK,"fRK");
 }
 
 function fill(field,id){
+  let set =
+    [...new Set(
+      all.map(d=>d[field])
+      .filter(Boolean)
+    )].sort();
 
-let set =
-[...new Set(
-all.map(d=>d[field])
-.filter(Boolean)
-)].sort();
+  let select =
+    document.getElementById(id);
 
-let select =
-document.getElementById(id);
+  set.forEach(v=>{
+    select.innerHTML +=
+      `<option value="${v}">${v}</option>`;
+  });
+}
 
-set.forEach(v=>{
+function fillCustom(fn,id){
+  let set =
+    [...new Set(
+      all.map(d=>fn(d))
+      .filter(Boolean)
+    )].sort();
 
-select.innerHTML += `
-<option value="${v}">
-${v}
-</option>
-`;
+  let select =
+    document.getElementById(id);
 
-});
+  set.forEach(v=>{
+    select.innerHTML +=
+      `<option value="${v}">${v}</option>`;
+  });
 }
 
 /* EXPORT */
 function exportExcel(){
 
-let ws =
-XLSX.utils.json_to_sheet(filtered);
+  if(!filtered || filtered.length === 0){
+    alert("Tidak ada data untuk diexport");
+    return;
+  }
 
-let wb =
-XLSX.utils.book_new();
+  let exportData = filtered.map((d,i)=>({
+    No: i + 1,
+    Nama: d.Nama || "-",
+    Jabatan: d.Jabatan || "-",
+    "Deskripsi IK": getIK(d),
+    "Deskripsi RK": getRK(d),
+    "Realisasi Kinerja": d["Realisasi Kinerja"] || "-",
+    Bukti: getBukti(d),
+    Akses: getAkses(d),
+    Kesesuaian: getKesesuaian(d),
+    Link: d.Link || "-"
+  }));
 
-XLSX.utils.book_append_sheet(
-wb,
-ws,
-"Dashboard"
-);
+  let ws = XLSX.utils.json_to_sheet(exportData);
+  let wb = XLSX.utils.book_new();
 
-XLSX.writeFile(
-wb,
-"dashboard.xlsx"
-);
+  XLSX.utils.book_append_sheet(wb, ws, "SIVERA");
 
+  ws["!cols"] = [
+    {wch:6},
+    {wch:25},
+    {wch:25},
+    {wch:40},
+    {wch:40},
+    {wch:45},
+    {wch:15},
+    {wch:18},
+    {wch:18},
+    {wch:35}
+  ];
+
+  XLSX.writeFile(wb, "SIVERA_Filtered.xlsx");
 }
 
-/* EVENT CHART */
+/* CHART EVENT */
 document.getElementById("chartX")
-.addEventListener("change",renderChart);
+  .addEventListener("change",renderChart);
 
 document.getElementById("chartType")
-.addEventListener("change",renderChart);
+  .addEventListener("change",renderChart);
 
 </script>
-
 </body>
 </html>
