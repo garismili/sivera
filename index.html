@@ -8,6 +8,7 @@
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
 <style>
 body{
@@ -896,9 +897,6 @@ function exportExcel(){
   }));
 
   let ws = XLSX.utils.json_to_sheet(exportData);
-  let wb = XLSX.utils.book_new();
-
-  XLSX.utils.book_append_sheet(wb, ws, "SIVERA");
 
   ws["!cols"] = [
     {wch:6},
@@ -910,10 +908,27 @@ function exportExcel(){
     {wch:15},
     {wch:18},
     {wch:18},
-    {wch:35}
+    {wch:40}
   ];
 
-  XLSX.writeFile(wb, "SIVERA_Filtered.xlsx");
+  let wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "SIVERA");
+
+  // binary excel
+  let excelBuffer = XLSX.write(wb, {
+    bookType: "xlsx",
+    type: "array"
+  });
+
+  let data = new Blob(
+    [excelBuffer],
+    {
+      type:
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8"
+    }
+  );
+
+  saveAs(data, "SIVERA_Filtered.xlsx");
 }
 
 /* CHART EVENT */
