@@ -728,6 +728,16 @@ table.team-table td.team-tasks{
   margin-top:6px;
 }
 
+.team-subhead-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:6px;
+}
+.team-subhead-row .team-subhead{ margin-top:0; }
+
 .team-mindmap-scroll{
   max-height:460px;
   overflow:auto;
@@ -737,44 +747,153 @@ table.team-table td.team-tasks{
   -webkit-overflow-scrolling:touch;
 }
 
-#teamMindmapSvg .mm-link{
+/* ===== Network Map (Interaksi Antar Pegawai) ===== */
+#teamNetworkSvg .net-edge{
   fill:none;
   stroke:var(--peach-soft);
+  stroke-width:1.6;
+}
+#teamNetworkSvg .net-edge.net-edge-selected{
+  stroke:var(--orange);
+  stroke-width:2.2;
+}
+#teamNetworkSvg .net-node-circle{
+  stroke:var(--white);
   stroke-width:2;
 }
-
-#teamMindmapSvg .mm-root-box{
+#teamNetworkSvg .net-node-circle.net-root{
   fill:var(--brown);
-  stroke:none;
 }
-#teamMindmapSvg .mm-root-text{
-  fill:var(--cream);
-  font-family:'Fraunces',serif;
-  font-size:13px;
-  font-weight:600;
-}
-
-#teamMindmapSvg .mm-rk-box{
+#teamNetworkSvg .net-node-circle.net-ketua{
   fill:var(--orange);
-  stroke:none;
 }
-#teamMindmapSvg .mm-rk-text{
-  fill:var(--white);
+#teamNetworkSvg .net-node-circle.net-anggota{
+  fill:var(--peach);
+}
+#teamNetworkSvg .net-node-label{
   font-family:'Inter',sans-serif;
-  font-size:11px;
+  font-size:12px;
+  font-weight:700;
+  fill:var(--brown-deep);
+}
+#teamNetworkSvg .net-node-label.net-root-label{
+  font-weight:800;
+  fill:var(--brown);
+}
+#teamNetworkSvg .net-node-label-in{
+  font-family:'Inter',sans-serif;
+  font-weight:700;
+  letter-spacing:0.2px;
+}
+#teamNetworkSvg .net-node-label-in-light{
+  fill:#FFFDF1;
+}
+#teamNetworkSvg .net-node-label-in-dark{
+  fill:#5c3a12;
+}
+#teamNetworkSvg .net-root-label-in{
+  font-weight:800;
+}
+#teamNetworkSvg .net-edge-label{
+  font-family:'Inter',sans-serif;
+  font-size:9.5px;
+  fill:#8a6a52;
+}
+#teamNetworkSvg .net-edge-label-bg{
+  fill:var(--white);
+  opacity:0.85;
+}
+#teamNetworkSvg .net-edge-label-ik{
+  fill:#a8590f;
   font-weight:700;
 }
-
-#teamMindmapSvg .mm-leaf-box{
-  fill:var(--white);
-  stroke:var(--peach-soft);
-  stroke-width:1.2;
+#teamNetworkSvg .net-edge-label-rk{
+  fill:#5c6b3f;
+  font-weight:700;
 }
-#teamMindmapSvg .mm-leaf-text{
-  fill:var(--brown-deep);
-  font-family:'Inter',sans-serif;
-  font-size:10.5px;
+.team-legend{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+  font-size:11.5px;
+  color:var(--brown);
+  padding:10px 14px 0;
+}
+.team-legend span{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.team-legend i{
+  width:11px; height:11px; border-radius:50%; display:inline-block;
+}
+.team-legend i.leg-root{ background:var(--brown); }
+.team-legend i.leg-ketua{ background:var(--orange); }
+.team-legend i.leg-anggota{ background:var(--peach); }
+.team-legend i.leg-line-ik, .team-legend i.leg-line-rk{
+  width:16px; height:3px; border-radius:2px;
+}
+.team-legend i.leg-line-ik{ background:#a8590f; }
+.team-legend i.leg-line-rk{ background:#5c6b3f; }
+
+/* ===== Cross Tab (Matriks Interaksi) ===== */
+.crosstab-table{
+  border-collapse:separate;
+  border-spacing:0;
+}
+.crosstab-table th, .crosstab-table td{
+  border:1px solid var(--peach-soft);
+  padding:8px 10px;
+  vertical-align:top;
+  min-width:150px;
+  max-width:220px;
+}
+.crosstab-table thead th{
+  position:sticky;
+  top:0;
+  z-index:2;
+  background:var(--brown);
+  color:var(--cream);
+  font-size:11px;
+}
+.crosstab-table thead th.crosstab-corner{
+  left:0;
+  z-index:3;
+  background:var(--brown-deep);
+}
+.crosstab-table tbody th{
+  position:sticky;
+  left:0;
+  z-index:1;
+  background:var(--orange);
+  color:#fff;
+  font-size:11px;
+  text-align:left;
+  min-width:130px;
+  max-width:160px;
+}
+.crosstab-table td.crosstab-diag{
+  background:repeating-linear-gradient(135deg, var(--peach-soft), var(--peach-soft) 6px, var(--cream) 6px, var(--cream) 12px);
+  text-align:center;
+  color:#c9b494;
+}
+.crosstab-table td.crosstab-empty{
+  color:#d8c3ac;
+  text-align:center;
+}
+.crosstab-cell-ik{
+  font-size:0.85em;
+  line-height:1.4;
+  color:#a8590f;
   font-weight:600;
+  margin:0 0 4px 0;
+}
+.crosstab-cell-rk{
+  font-size:0.85em;
+  line-height:1.4;
+  color:#5c6b3f;
+  font-weight:600;
+  margin:0;
 }
 
 /* ===== Table ===== */
@@ -1655,24 +1774,64 @@ td a:hover{
   </div>
 
   <div class="chart-controls">
-    <div class="field">
-      <label>Pilih Nama (sebagai Ketua Tim)</label>
-      <select id="teamKetuaSelect" onchange="renderTeamInteraction()">
-        <option value="">— Pilih Nama —</option>
-      </select>
+    <div class="field msfield" data-key="teamNama">
+      <label>Pilih Nama (multi-select, dependent)</label>
+      <button type="button" class="ms-toggle" onclick="teamToggleMS()">
+        <span class="ms-label" id="teamMsLabel">Semua</span><span class="ms-caret">▾</span>
+      </button>
+      <div class="ms-panel" id="teamMsPanel">
+        <div class="ms-search"><input type="text" placeholder="Cari nama..." oninput="teamMsFilterOptions(this.value)"></div>
+        <div class="ms-panel-actions">
+          <button type="button" onclick="teamMsSelectAll()">Pilih Semua</button>
+          <button type="button" onclick="teamMsClear()">Bersihkan</button>
+        </div>
+        <div class="ms-options" id="teamMsOptions"></div>
+      </div>
     </div>
   </div>
 
   <div id="teamSummary"></div>
 
-  <div class="team-subhead">📋 Tabel Rincian: IK yang Dibawahi &amp; Anggota Tim</div>
+  <div class="team-subhead-row">
+    <div class="team-subhead">📋 Tabel Rincian: Interaksi Ketua &amp; Anggota Tim</div>
+    <div class="dl-btns">
+      <button type="button" class="dl-btn" onclick="exportTeamTableExcel()">📊 Excel</button>
+    </div>
+  </div>
   <div class="team-scroll" id="teamScroll">
     <table class="team-table" id="teamTable"></table>
   </div>
 
-  <div class="team-subhead">🗺️ Mind Map Struktur Tim</div>
+  <div class="team-subhead-row">
+    <div class="team-subhead">🕸️ Network Map: Interaksi Antar Pegawai</div>
+    <div class="dl-btns">
+      <button type="button" class="dl-btn" onclick="exportTeamNetworkJPG()">🖼 JPG</button>
+    </div>
+  </div>
+  <div class="team-legend">
+    <span><i class="leg-root"></i>Nama Terpilih</span>
+    <span><i class="leg-ketua"></i>Ketua Tim</span>
+    <span><i class="leg-anggota"></i>Anggota Tim</span>
+    <span><i class="leg-line-ik"></i>Garis label = Deskripsi IK (sisi Ketua)</span>
+    <span><i class="leg-line-rk"></i>Garis label = Deskripsi RK (sisi Anggota)</span>
+  </div>
   <div class="team-mindmap-scroll" id="teamMindmapScroll">
-    <svg id="teamMindmapSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+    <svg id="teamNetworkSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+
+  <div class="team-subhead-row">
+    <div class="team-subhead">🔢 Cross Tab: Matriks Interaksi Antar Nama Terpilih</div>
+    <div class="dl-btns">
+      <button type="button" class="dl-btn" onclick="exportTeamCrossTabExcel()">📊 Excel</button>
+    </div>
+  </div>
+  <div class="team-legend">
+    <span><i class="leg-line-ik"></i>Sel (i, j) = Deskripsi IK — i sbg Ketua Tim dari j</span>
+    <span><i class="leg-line-rk"></i>Sel (j, i) = Deskripsi RK — j sbg Anggota Tim di bawah i</span>
+    <span>▪️ Diagonal (i, i) dikosongkan</span>
+  </div>
+  <div class="team-scroll" id="teamCrossTabScroll">
+    <table class="team-table crosstab-table" id="teamCrossTabTable"></table>
   </div>
 </div>
 
@@ -1794,6 +1953,8 @@ let filtered = [];
 let chart;
 let lastChartData = null;
 let lastPivotData = null;
+let lastTeamRows = [];
+let lastTeamCrossTab = { names: [], matrix: {} };
 
 let page = 1;
 let perPage = 15;
@@ -1845,6 +2006,22 @@ function escapeHtml(s){
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#39;");
+}
+
+/* Helper ukur lebar teks (px) memakai canvas, dipakai untuk mencegah teks nama di network map terpotong */
+const _measureCanvas = document.createElement("canvas");
+const _measureCtx = _measureCanvas.getContext("2d");
+function measureTextWidth(text, fontSizePx, weight){
+  _measureCtx.font = `${weight || 700} ${fontSizePx}px Inter, sans-serif`;
+  return _measureCtx.measureText(text || "").width;
+}
+
+/* ambil N kata pertama dari sebuah nama, mis. truncateWords("Anak Agung Ketut Agung", 2) -> "Anak Agung…" */
+function truncateWords(s, wordCount){
+  s = (s||"").toString().trim();
+  let parts = s.split(/\s+/).filter(Boolean);
+  if(parts.length <= wordCount) return s;
+  return parts.slice(0, wordCount).join(" ") + "…";
 }
 
 /* ===== VERIFIKASI KESESUAIAN / VALIDASI (dropdown -> verifikator -> catatan) ===== */
@@ -2486,280 +2663,611 @@ function renderPivot(){
   `;
 }
 
-/* ===== TEAM INTERACTION: KETUA & ANGGOTA (berdasarkan Deskripsi RK) ===== */
-function fillTeamKetuaOptions(){
-  let sel = document.getElementById("teamKetuaSelect");
-  if(!sel) return;
-  let prev = sel.value;
+/* ===== TEAM INTERACTION: KETUA & ANGGOTA (multi-select, network map) ===== */
+let teamMsSelected = new Set();
+let teamMsOptionCache = [];
 
-  // Prioritaskan nama yang pernah tercatat berperan sebagai "Ketua Tim" pada kolom Peran
-  let ketuaNames = new Set();
-  filtered.forEach(d=>{
-    if(/ketua/i.test(val(d,"Peran"))) ketuaNames.add(val(d,"Nama"));
-  });
-
-  let list;
-  if(ketuaNames.size > 0){
-    list = [...ketuaNames].filter(Boolean).sort();
-  } else {
-    // Fallback: jika tidak ada label "Ketua" pada kolom Peran, tampilkan semua nama
-    list = [...new Set(filtered.map(d=>val(d,"Nama")))].filter(Boolean).sort();
-  }
-
-  sel.innerHTML = `<option value="">— Pilih Nama —</option>` +
-    list.map(n=>`<option value="${escapeHtml(n)}">${escapeHtml(n)}</option>`).join("");
-
-  if(list.includes(prev)) sel.value = prev;
+/* Nama tersedia = dependent pada filter dashboard yang aktif (variabel `filtered`) */
+function teamAvailableNames(){
+  return [...new Set(filtered.map(d=>val(d,"Nama")))].filter(Boolean).sort();
 }
 
-/* Bangun struktur: untuk seorang Ketua Tim, RK apa saja yang ia bawahi (Peran="Ketua Tim"
-   pada RK tsb), dan siapa saja Anggota Tim yang mengerjakan RK yang sama. */
-function buildKetuaStructure(ketua){
-  let groups = {}; // ik -> Map(nama -> {peran, rks: Set, daftarKegiatan: Set})
+function fillTeamNameOptions(){
+  let values = teamAvailableNames();
+
+  // buang pilihan yang sudah tidak valid akibat perubahan filter dashboard (dependent)
+  let changed = false;
+  teamMsSelected.forEach(v=>{
+    if(!values.includes(v)){ teamMsSelected.delete(v); changed = true; }
+  });
+
+  teamMsOptionCache = values;
+  renderTeamMsOptions(values);
+  updateTeamMsLabel();
+}
+
+function renderTeamMsOptions(values){
+  const container = document.getElementById("teamMsOptions");
+  if(!container) return;
+  if(values.length === 0){
+    container.innerHTML = `<div class="ms-empty">Tidak ada opsi</div>`;
+    return;
+  }
+  container.innerHTML = values.map(v=>{
+    const checked = teamMsSelected.has(v) ? "checked" : "";
+    const esc = escapeHtml(v);
+    return `<label class="ms-opt"><input type="checkbox" value="${esc}" ${checked} onchange="teamMsToggleValue(this)"><span title="${esc}">${esc}</span></label>`;
+  }).join("");
+}
+
+function updateTeamMsLabel(){
+  const labelEl = document.getElementById("teamMsLabel");
+  const fieldEl = document.querySelector('.msfield[data-key="teamNama"]');
+  if(!labelEl) return;
+  if(teamMsSelected.size === 0){
+    labelEl.textContent = "Semua";
+    if(fieldEl) fieldEl.classList.remove("ms-has-selection");
+  } else if(teamMsSelected.size === 1){
+    labelEl.textContent = [...teamMsSelected][0];
+    if(fieldEl) fieldEl.classList.add("ms-has-selection");
+  } else {
+    labelEl.textContent = teamMsSelected.size + " dipilih";
+    if(fieldEl) fieldEl.classList.add("ms-has-selection");
+  }
+}
+
+function teamMsToggleValue(checkboxEl){
+  const v = checkboxEl.value;
+  if(checkboxEl.checked) teamMsSelected.add(v);
+  else teamMsSelected.delete(v);
+  renderTeamInteraction();
+}
+
+function teamMsSelectAll(){
+  teamMsSelected = new Set(teamAvailableNames());
+  renderTeamInteraction();
+}
+
+function teamMsClear(){
+  teamMsSelected = new Set();
+  renderTeamInteraction();
+}
+
+function teamMsFilterOptions(term){
+  const q = norm(term);
+  const values = (teamMsOptionCache || []).filter(v=> norm(v).includes(q));
+  renderTeamMsOptions(values);
+}
+
+function teamToggleMS(){
+  const panel = document.getElementById("teamMsPanel");
+  const isOpen = panel.classList.contains("open");
+  document.querySelectorAll(".ms-panel.open").forEach(p=>p.classList.remove("open"));
+  if(!isOpen) panel.classList.add("open");
+}
+
+/* Bangun graf interaksi: untuk tiap Deskripsi IK, orang berperan "Ketua Tim" dihubungkan
+   ke tiap Anggota Tim yang mengerjakan IK yang sama. Hanya edge yang menyentuh
+   minimal satu nama terpilih yang disertakan, sehingga network map tetap fokus & rapi. */
+function buildTeamNetwork(selectedNames){
+  let groups = {}; // ik -> Map(nama -> {peran, rk: Set, kegiatan: Set})
   filtered.forEach(d=>{
     let ik = val(d,"Deskripsi IK");
     if(!ik || ik === "-") return;
-    
     let nama = val(d,"Nama");
     let peran = val(d,"Peran");
     let rk = val(d,"Deskripsi RK");
     let realisasi = val(d,"Realisasi Berdasarkan Bukti Dukung");
 
     if(!groups[ik]) groups[ik] = new Map();
-    
-    // Siapkan objek data untuk setiap anggota tim, ditambah daftarKegiatan
-    let mData = groups[ik].get(nama) || { peran: peran, rks: new Set(), daftarKegiatan: new Set() };
+    let mData = groups[ik].get(nama) || { peran: peran, rk: new Set(), kegiatan: new Set() };
     if(/ketua/i.test(peran)) mData.peran = peran;
-    if(rk && rk !== "-") mData.rks.add(rk);
-    
-    // Menyimpan teks realisasi ke dalam Set (agar tidak ada duplikat untuk orang yang sama)
-    if(realisasi && realisasi.trim() !== "" && realisasi !== "-") {
-        mData.daftarKegiatan.add(realisasi.trim());
-    }
-
+    if(rk && rk !== "-") mData.rk.add(rk);
+    if(realisasi && realisasi !== "-") mData.kegiatan.add(realisasi);
     groups[ik].set(nama, mData);
   });
 
-  let structure = [];
+  let nodes = new Map();  // nama -> {nama, roles:Set, isSelected}
+  let edges = [];         // {from, to, ik, rk}
+  let rows = [];          // untuk tabel rincian
+
+  function ensureNode(nama, role){
+    let n = nodes.get(nama) || { nama, roles: new Set(), isSelected: selectedNames.has(nama) };
+    if(role) n.roles.add(role);
+    nodes.set(nama, n);
+  }
+
   Object.keys(groups).forEach(ik=>{
     let members = groups[ik];
-    let ketuaData = members.get(ketua);
-    
-    if(!ketuaData || !/ketua/i.test(ketuaData.peran)) return; 
+    let ketuaEntry = [...members.entries()].find(([,m])=> /ketua/i.test(m.peran));
+    if(!ketuaEntry) return;
+    let [ketuaNama, ketuaData] = ketuaEntry;
 
-    // Format anggota menjadi array of object
-    let anggota = [...members.entries()]
-      .filter(([nama])=> nama !== ketua)
-      .map(([nama, mData])=> {
-         return {
-           nama: nama,
-           rk: Array.from(mData.rks).join(", "),
-           kegiatanCount: mData.daftarKegiatan.size, // Menghitung jumlahnya
-           kegiatanList: Array.from(mData.daftarKegiatan) // Menyimpan list teksnya
-         };
-      })
-      .sort((a,b)=> a.nama.localeCompare(b.nama));
+    [...members.entries()].forEach(([nama, mData])=>{
+      if(nama === ketuaNama) return;
+      let touchesSelected = selectedNames.has(ketuaNama) || selectedNames.has(nama);
+      if(!touchesSelected) return;
 
-    structure.push({ ik, anggota }); 
+      ensureNode(ketuaNama, "ketua");
+      ensureNode(nama, "anggota");
+
+      let rkText = Array.from(mData.rk).join(", ");
+      let kegiatanList = Array.from(mData.kegiatan);
+      edges.push({ from: ketuaNama, to: nama, ik, rk: rkText });
+      rows.push({ ketua: ketuaNama, anggota: nama, ik, rk: rkText, kegiatan: kegiatanList });
+    });
   });
 
-  structure.sort((a,b)=> b.anggota.length - a.anggota.length);
-  return structure;
+  return { nodes, edges, rows };
 }
 
 function renderTeamInteraction(){
-  fillTeamKetuaOptions();
+  fillTeamNameOptions();
 
-  let sel = document.getElementById("teamKetuaSelect");
   let summaryEl = document.getElementById("teamSummary");
   let table = document.getElementById("teamTable");
-  let svg = document.getElementById("teamMindmapSvg");
-  if(!sel || !table || !summaryEl || !svg) return;
+  let svg = document.getElementById("teamNetworkSvg");
+  if(!table || !summaryEl || !svg) return;
 
-  let ketua = sel.value;
-
-  if(!ketua){
-    summaryEl.innerHTML = `<div class="team-hint">Pilih nama di atas untuk melihat Deskripsi IK apa saja yang dibawahi orang tersebut sebagai Ketua Tim, beserta Anggota Tim yang mengerjakan IK yang sama.</div>`;
+  if(teamMsSelected.size === 0){
+    summaryEl.innerHTML = `<div class="team-hint">Pilih satu atau beberapa nama di atas untuk melihat interaksi sebagai Ketua Tim / Anggota Tim, beserta Deskripsi IK dan Deskripsi RK yang dikerjakan bersama.</div>`;
     table.innerHTML = "";
     svg.innerHTML = "";
     svg.removeAttribute("viewBox");
+    lastTeamRows = [];
+    renderTeamCrossTab([], []);
     return;
   }
 
-  let structure = buildKetuaStructure(ketua);
+  let net = buildTeamNetwork(teamMsSelected);
 
-  if(structure.length === 0){
-    summaryEl.innerHTML = `<div class="team-hint"><b>${escapeHtml(ketua)}</b> tidak tercatat berperan sebagai Ketua Tim pada Deskripsi IK manapun, pada filter saat ini.</div>`;
+  if(net.rows.length === 0){
+    summaryEl.innerHTML = `<div class="team-hint">Nama yang dipilih tidak tercatat memiliki interaksi Ketua Tim ↔ Anggota Tim pada Deskripsi IK manapun, pada filter saat ini.</div>`;
     table.innerHTML = "";
     svg.innerHTML = "";
     svg.removeAttribute("viewBox");
+    lastTeamRows = [];
+    renderTeamCrossTab([...teamMsSelected], []);
     return;
   }
 
-  let totalAnggotaUnik = new Set();
-  structure.forEach(g=> g.anggota.forEach(n=> totalAnggotaUnik.add(n.nama)));
-
+  let ikUnik = new Set(net.rows.map(r=>r.ik));
   summaryEl.innerHTML = `
     <div class="team-stat-row">
-      <div class="team-stat"><b>${structure.length}</b> Deskripsi IK Dibawahi</div>
-      <div class="team-stat"><b>${totalAnggotaUnik.size}</b> Anggota Tim Berbeda</div>
+      <div class="team-stat"><b>${teamMsSelected.size}</b> Nama Terpilih</div>
+      <div class="team-stat"><b>${net.nodes.size}</b> Pegawai Terhubung</div>
+      <div class="team-stat"><b>${ikUnik.size}</b> Deskripsi IK</div>
+      <div class="team-stat"><b>${net.rows.length}</b> Relasi Ketua–Anggota</div>
     </div>`;
 
-  // ===== Tabel =====
+  // ===== Tabel Rincian =====
+  let sortedRows = net.rows.slice().sort((a,b)=> a.ketua.localeCompare(b.ketua) || a.anggota.localeCompare(b.anggota));
+  lastTeamRows = sortedRows;
+
   table.innerHTML = `
     <thead>
       <tr>
         <th>No</th>
-        <th>Deskripsi IK</th>
+        <th>Ketua Tim</th>
         <th>Anggota Tim</th>
+        <th>Deskripsi IK</th>
         <th>Deskripsi RK</th>
-        <th>Daftar Kegiatan</th> <!-- KOLOM BARU -->
-        <th>Jumlah Kegiatan</th>
-        <th>Jumlah Anggota</th>
+        <th>Kegiatan</th>
       </tr>
     </thead>
     <tbody>
-      ${structure.map((g,i)=>{
-        if(g.anggota.length === 0){
-           return `
-           <tr>
-             <td>${i+1}</td>
-             <td title="${escapeHtml(g.ik || g.rk)}">${escapeHtml(g.ik || g.rk)}</td>
-             <td><span style="color:#c9b494;">— Tidak ada anggota lain —</span></td>
-             <td>-</td>
-             <td>-</td> <!-- SEL KOSONG UNTUK KOLOM BARU -->
-             <td style="text-align:center;">-</td>
-             <td class="team-count">0</td>
-           </tr>`;
-        }
-
-        let rowsHtml = "";
-        g.anggota.forEach((a, index) => {
-           // Mengubah array daftar kegiatan menjadi bullet points HTML
-           let listKegiatanHtml = a.kegiatanList.length > 0 
-             ? `<ul style="margin:0; padding-left:1.2em;">${a.kegiatanList.map(k => `<li>${escapeHtml(k)}</li>`).join("")}</ul>`
-             : "-";
-
-           if (index === 0) {
-             rowsHtml += `
-             <tr>
-               <td rowspan="${g.anggota.length}">${i+1}</td>
-               <td rowspan="${g.anggota.length}" title="${escapeHtml(g.ik || g.rk)}">${escapeHtml(g.ik || g.rk)}</td>
-               <td><span class="team-badge">${escapeHtml(a.nama)}</span></td>
-               <td style="font-size:0.9em; line-height:1.4;">${escapeHtml(a.rk || "-")}</td>
-               <td style="font-size:0.9em; line-height:1.4;">${listKegiatanHtml}</td> <!-- PRINT LIST KEGIATAN -->
-               <td style="text-align:center;"><span class="team-badge" style="background:#eef2f3; color:#333;">${a.kegiatanCount}</span></td>
-               <td rowspan="${g.anggota.length}" class="team-count">${g.anggota.length}</td>
-             </tr>`;
-           } else {
-             rowsHtml += `
-             <tr>
-               <td><span class="team-badge">${escapeHtml(a.nama)}</span></td>
-               <td style="font-size:0.9em; line-height:1.4;">${escapeHtml(a.rk || "-")}</td>
-               <td style="font-size:0.9em; line-height:1.4;">${listKegiatanHtml}</td> <!-- PRINT LIST KEGIATAN -->
-               <td style="text-align:center;"><span class="team-badge" style="background:#eef2f3; color:#333;">${a.kegiatanCount}</span></td>
-             </tr>`;
-           }
-        });
-        return rowsHtml;
+      ${sortedRows.map((r,i)=>{
+        let kegiatanHtml = r.kegiatan.length > 0
+          ? `<ul style="margin:0; padding-left:1.2em;">${r.kegiatan.map(k=>`<li>${escapeHtml(k)}</li>`).join("")}</ul>`
+          : "-";
+        return `
+        <tr>
+          <td>${i+1}</td>
+          <td><span class="team-badge" style="background:var(--orange); color:#fff;">${escapeHtml(r.ketua)}</span>${teamMsSelected.has(r.ketua) ? " ⭐" : ""}</td>
+          <td><span class="team-badge">${escapeHtml(r.anggota)}</span>${teamMsSelected.has(r.anggota) ? " ⭐" : ""}</td>
+          <td style="font-size:0.9em; line-height:1.4;" title="${escapeHtml(r.ik)}">${escapeHtml(r.ik)}</td>
+          <td style="font-size:0.9em; line-height:1.4;">${escapeHtml(r.rk || "-")}</td>
+          <td style="font-size:0.9em; line-height:1.4;">${kegiatanHtml}</td>
+        </tr>`;
       }).join("")}
     </tbody>
   `;
 
-  // ===== Mind Map =====
-  renderTeamMindMap(ketua, structure);
+  // ===== Network Map =====
+  renderTeamNetworkGraph(net, teamMsSelected);
+
+  // ===== Cross Tab =====
+  renderTeamCrossTab([...teamMsSelected], net.edges);
 }
 
-/* Render mind map (percabangan): Ketua Tim -> Deskripsi RK -> Anggota Tim, sebagai SVG */
-function renderTeamMindMap(ketua, structure){
-  const svg = document.getElementById("teamMindmapSvg");
+/* Render network map (radial): setiap node ditempatkan melingkar, node yang dipilih
+   digambar lebih besar/gelap (root), edge menghubungkan Ketua Tim <-> Anggota Tim. */
+function renderTeamNetworkGraph(net, selectedNames){
+  const svg = document.getElementById("teamNetworkSvg");
   if(!svg) return;
-
-  const leafH = 32;
-  const padY = 24;
-  const rootX = 20, rootW = 190, rootH = 46;
-  const rkX = 250, rkW = 300, rkH = 30;
-  const leafX = 590, leafW = 220, leafH_box = 26;
-  const svgW = 840;
-
-  let y = padY;
-  let leafNodes = [];   // {label, y}
-  let rkNodes = [];     // {rk, y, leafYs:[]}
-
-  structure.forEach(g=>{
-    let startY = y;
-    let leafYs = [];
-    if(g.anggota.length === 0){
-      leafNodes.push({ label: "(tidak ada anggota lain)", y, placeholder:true });
-      leafYs.push(y);
-      y += leafH;
-    } else {
-      g.anggota.forEach(a=>{
-        leafNodes.push({ label: a.nama, y });
-        leafYs.push(y);
-        y += leafH;
-      });
-    }
-    let rkY = (leafYs[0] + leafYs[leafYs.length-1]) / 2;
-    
-    // PERBAIKAN DI SINI: Mengambil data dari g.ik
-    rkNodes.push({ rk: g.ik || g.rk, y: rkY, leafYs });
-  });
-
-  let totalHeight = y + padY;
-  let rootY = totalHeight / 2;
 
   function truncate(s, n){
     s = (s||"").toString();
     return s.length > n ? s.slice(0, n-1) + "…" : s;
   }
-
-  function bezierPath(x1,y1,x2,y2){
-    let mx = (x1+x2)/2;
-    return `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`;
+  function quadPoint(p0,c,p2,t){
+    let mt = 1-t;
+    return { x: mt*mt*p0.x + 2*mt*t*c.x + t*t*p2.x, y: mt*mt*p0.y + 2*mt*t*c.y + t*t*p2.y };
+  }
+  function quadTangent(p0,c,p2,t){
+    let mt = 1-t;
+    return { x: 2*mt*(c.x-p0.x) + 2*t*(p2.x-c.x), y: 2*mt*(c.y-p0.y) + 2*t*(p2.y-c.y) };
   }
 
-  let linksHtml = "";
-  let rkBoxesHtml = "";
-  let leafBoxesHtml = "";
+  let names = [...net.nodes.keys()];
+  let count = names.length;
 
-  rkNodes.forEach(rn=>{
-    // link root -> rk node
-    linksHtml += `<path class="mm-link" d="${bezierPath(rootX+rootW, rootY, rkX, rn.y)}"/>`;
-    rkBoxesHtml += `
+  // node terpilih (root) & node lain
+  let rootNames = names.filter(n=> selectedNames.has(n));
+  let otherNames = names.filter(n=> !selectedNames.has(n));
+  let ordered = [...rootNames, ...otherNames];
+
+  // kelompokkan tiap node-lain ke root yang menghubunginya, supaya tiap root punya "sektor" sendiri
+  // (tidak campur dengan sektor root lain) — bikin peta lebih jelas saat >1 nama dipilih.
+  let groupOf = new Map();
+  net.edges.forEach(e=>{
+    let other = selectedNames.has(e.from) ? e.to : (selectedNames.has(e.to) ? e.from : null);
+    let root  = selectedNames.has(e.from) ? e.from : (selectedNames.has(e.to) ? e.to : null);
+    if(other && root && !groupOf.has(other)) groupOf.set(other, root);
+  });
+  let groups = new Map();
+  rootNames.forEach(r=> groups.set(r, []));
+  otherNames.forEach(n=>{
+    let g = groupOf.get(n) || rootNames[0];
+    if(!groups.has(g)) groups.set(g, []);
+    groups.get(g).push(n);
+  });
+
+  // kanvas & jarak dibuat lebih lega saat multi-root, supaya tiap cluster tidak berdesakan
+  let svgSize = Math.max(760, Math.min(1440, 280 + count*66 + (rootNames.length>1 ? rootNames.length*90 : 0)));
+  let cx = svgSize/2, cy = svgSize/2;
+  let radius = Math.max(240, svgSize/2 - 150);
+  let rootRadius = rootNames.length > 1 ? Math.min(300, radius*0.62) : 0;
+
+  let positions = new Map();
+  let rootAngle = new Map();
+
+  rootNames.forEach((n,i)=>{
+    if(rootNames.length === 1){
+      positions.set(n, { x: cx, y: cy });
+      rootAngle.set(n, -Math.PI/2);
+    } else {
+      let angle = (2*Math.PI * i / rootNames.length) - Math.PI/2;
+      positions.set(n, { x: cx + rootRadius*Math.cos(angle), y: cy + rootRadius*Math.sin(angle) });
+      rootAngle.set(n, angle);
+    }
+  });
+
+  if(rootNames.length <= 1){
+    otherNames.forEach((n,i)=>{
+      let angle = (2*Math.PI * i / Math.max(otherNames.length,1)) - Math.PI/2;
+      positions.set(n, { x: cx + radius*Math.cos(angle), y: cy + radius*Math.sin(angle) });
+    });
+  } else {
+    // setiap root diberi "sektor" busur sendiri untuk node-node terkaitnya, agar antar cluster tidak saling tumpang tindih
+    let sectorSpan = (2*Math.PI / rootNames.length) * 0.82;
+    groups.forEach((members, root)=>{
+      let baseAngle = rootAngle.get(root);
+      let n = members.length;
+      members.forEach((m,i)=>{
+        let localT = n <= 1 ? 0 : (i/(n-1)) - 0.5;
+        let angle = baseAngle + localT * sectorSpan;
+        positions.set(m, { x: cx + radius*Math.cos(angle), y: cy + radius*Math.sin(angle) });
+      });
+    });
+  }
+
+  // font label garis dibuat lebih kecil otomatis kalau relasinya banyak, supaya tetap rapi & tidak bertabrakan
+  let edgeCount = net.edges.length;
+  let edgeFontSize = edgeCount > 26 ? 8 : (edgeCount > 14 ? 8.6 : 9.5);
+  let edgeLabelMaxChars = edgeCount > 26 ? 12 : (edgeCount > 14 ? 14 : 18);
+
+  let edgesHtml = "";
+  let edgeLabelsHtml = "";
+  net.edges.forEach((e)=>{
+    let p1 = positions.get(e.from), p2 = positions.get(e.to);
+    if(!p1 || !p2) return;
+    let isSelectedEdge = selectedNames.has(e.from) || selectedNames.has(e.to);
+    let dx = p2.x - p1.x, dy = p2.y - p1.y;
+    let len = Math.sqrt(dx*dx + dy*dy) || 1;
+
+    // titik kontrol lengkung: digeser tegak lurus garis, membelok landai menjauhi pusat map
+    let nx = -dy/len, ny = dx/len;
+    let mid = { x: (p1.x+p2.x)/2, y: (p1.y+p2.y)/2 };
+    let toCenter = { x: mid.x - cx, y: mid.y - cy };
+    if(nx*toCenter.x + ny*toCenter.y < 0){ nx = -nx; ny = -ny; }
+    let curveAmt = Math.min(46, Math.max(14, len*0.12));
+    let ctrl = { x: mid.x + nx*curveAmt, y: mid.y + ny*curveAmt };
+
+    // titik label mengikuti lengkung garis: IK di sisi Ketua (t=0.36), RK di sisi Anggota (t=0.64)
+    // digeser lebih jauh dari ujung node (menjauh dari p1/p2) supaya tidak ketutup lingkaran node
+    let offset = 12;
+    function labelAt(t, sign){
+      let pt = quadPoint(p1, ctrl, p2, t);
+      let tan = quadTangent(p1, ctrl, p2, t);
+      let tLen = Math.sqrt(tan.x*tan.x + tan.y*tan.y) || 1;
+      let lnx = -tan.y/tLen, lny = tan.x/tLen;
+      let angleDeg = Math.atan2(tan.y, tan.x) * 180 / Math.PI;
+      if(angleDeg > 90) angleDeg -= 180;
+      if(angleDeg < -90) angleDeg += 180;
+      return { x: pt.x + lnx*offset*sign, y: pt.y + lny*offset*sign, angleDeg };
+    }
+    let ikLbl = labelAt(0.36, 1);
+    let rkLbl = labelAt(0.64, -1);
+
+    const haloStyle = `paint-order:stroke; stroke:#FFFDF1; stroke-width:3.5px; stroke-linejoin:round; font-size:${edgeFontSize}px;`;
+    edgesHtml += `
       <g>
-        <title>${escapeHtml(rn.rk)}</title>
-        <rect class="mm-rk-box" x="${rkX}" y="${rn.y - rkH/2}" width="${rkW}" height="${rkH}" rx="8"></rect>
-        <text class="mm-rk-text" x="${rkX + 12}" y="${rn.y + 4}">${escapeHtml(truncate(rn.rk, 40))}</text>
+        <title>${escapeHtml(e.from)} (Ketua) — IK: ${escapeHtml(e.ik)} | ${escapeHtml(e.to)} (Anggota) — RK: ${escapeHtml(e.rk || "-")}</title>
+        <path class="net-edge${isSelectedEdge ? " net-edge-selected" : ""}" d="M ${p1.x} ${p1.y} Q ${ctrl.x} ${ctrl.y} ${p2.x} ${p2.y}"/>
       </g>`;
+    // label teks ditaruh di layer terpisah (dirender setelah node) supaya tidak pernah ketutup lingkaran
+    edgeLabelsHtml += `
+      <g>
+        <text class="net-edge-label net-edge-label-ik" x="${ikLbl.x}" y="${ikLbl.y}" text-anchor="middle" transform="rotate(${ikLbl.angleDeg} ${ikLbl.x} ${ikLbl.y})" style="${haloStyle}">${escapeHtml(truncate(e.ik, edgeLabelMaxChars))}</text>
+        <text class="net-edge-label net-edge-label-rk" x="${rkLbl.x}" y="${rkLbl.y}" text-anchor="middle" transform="rotate(${rkLbl.angleDeg} ${rkLbl.x} ${rkLbl.y})" style="${haloStyle}">${escapeHtml(truncate(e.rk || "-", edgeLabelMaxChars))}</text>
+      </g>`;
+  });
 
-    // link rk -> each leaf under this rk
-    rn.leafYs.forEach(ly=>{
-      linksHtml += `<path class="mm-link" d="${bezierPath(rkX+rkW, rn.y, leafX, ly)}"/>`;
+
+  let nodeR = 36;
+  let nodesHtml = "";
+  let defsHtml = "";
+  ordered.forEach((n, idx)=>{
+    let p = positions.get(n);
+    let node = net.nodes.get(n);
+    let isRoot = selectedNames.has(n);
+    let role = node.roles.has("ketua") ? "ketua" : "anggota";
+    let r = isRoot ? nodeR + 4 : nodeR - 4;
+    let cls = isRoot ? "net-root" : (role === "ketua" ? "net-ketua" : "net-anggota");
+    // teks di dalam lingkaran gelap (root/ketua) pakai warna terang; di lingkaran peach (anggota, warna muda) pakai warna gelap
+    let onLight = !isRoot && role === "anggota";
+    let labelCls = "net-node-label-in" + (onLight ? " net-node-label-in-dark" : " net-node-label-in-light") + (isRoot ? " net-root-label-in" : "");
+    let labelFontSize = isRoot ? 10.5 : 9;
+    let labelWeight = isRoot ? 800 : 700;
+    let labelText = truncateWords(n, 2);
+
+    // path lengkung TAK-TERLIHAT di dalam lingkaran — cukup ke dalam supaya badan huruf (termasuk bagian atasnya)
+    // tetap berada di dalam lingkaran, tidak nongol keluar garis tepi. Panjang teks tetap dijamin muat lewat textLength di bawah.
+    let labelR = Math.max(10, r * 0.55);
+    const toRad = deg => deg * Math.PI / 180;
+    let startDeg = 175, endDeg = 365; // busur ±190° (lebih dari setengah lingkaran) demi ruang teks ekstra
+    let sx = p.x + labelR * Math.cos(toRad(startDeg));
+    let sy = p.y + labelR * Math.sin(toRad(startDeg));
+    let ex = p.x + labelR * Math.cos(toRad(endDeg));
+    let ey = p.y + labelR * Math.sin(toRad(endDeg));
+    let arcId = `netArcLabel${idx}`;
+    // busur >180° -> large-arc-flag = 1
+    defsHtml += `<path id="${arcId}" d="M ${sx} ${sy} A ${labelR} ${labelR} 0 1 1 ${ex} ${ey}" fill="none" stroke="none"/>`;
+
+    // ukur lebar teks asli; kalau lebih panjang dari busur yang tersedia, kompres otomatis (textLength) supaya pasti muat & tidak terpotong
+    let arcLen = labelR * (Math.abs(endDeg - startDeg) * Math.PI / 180);
+    let safeArcLen = arcLen * 0.92;
+    let textWidthPx = measureTextWidth(labelText, labelFontSize, labelWeight);
+    let textLengthAttr = "";
+    if(textWidthPx > safeArcLen){
+      textLengthAttr = ` textLength="${safeArcLen.toFixed(1)}" lengthAdjust="spacingAndGlyphs"`;
+    }
+
+    nodesHtml += `
+      <g>
+        <title>${escapeHtml(n)} — ${role === "ketua" ? "Ketua Tim" : "Anggota Tim"}</title>
+        <circle class="net-node-circle ${cls}" cx="${p.x}" cy="${p.y}" r="${r}"/>
+        <text class="${labelCls}" style="font-size:${labelFontSize}px;">
+          <textPath href="#${arcId}" xlink:href="#${arcId}" startOffset="50%" text-anchor="middle"${textLengthAttr}>${escapeHtml(labelText)}</textPath>
+        </text>
+      </g>`;
+  });
+
+  let defsBlock = `<defs>${defsHtml}</defs>`;
+
+  svg.setAttribute("viewBox", `0 0 ${svgSize} ${svgSize}`);
+  svg.setAttribute("width", "100%");
+  svg.setAttribute("height", Math.min(svgSize, 880));
+  svg.innerHTML = defsBlock + edgesHtml + nodesHtml + edgeLabelsHtml;
+}
+
+/* ===== TEAM INTERACTION: EXPORT ===== */
+function exportTeamTableExcel(){
+  if(!lastTeamRows || lastTeamRows.length === 0){
+    alert("Tidak ada data interaksi untuk diexport. Pilih nama terlebih dahulu.");
+    return;
+  }
+
+  let exportRows = lastTeamRows.map((r,i)=>({
+    "No": i+1,
+    "Ketua Tim": r.ketua,
+    "Anggota Tim": r.anggota,
+    "Deskripsi IK": r.ik,
+    "Deskripsi RK": r.rk || "-",
+    "Kegiatan": r.kegiatan.length > 0 ? r.kegiatan.join("; ") : "-"
+  }));
+
+  let ws = XLSX.utils.json_to_sheet(exportRows);
+  ws["!cols"] = [{wch:5},{wch:28},{wch:28},{wch:36},{wch:36},{wch:50}];
+
+  let wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Interaksi Tim");
+
+  let buf = XLSX.write(wb, { bookType:"xlsx", type:"array" });
+  saveAs(new Blob([buf], { type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8" }), "SIVERA_Interaksi_Tim.xlsx");
+}
+
+function exportTeamNetworkJPG(){
+  const svg = document.getElementById("teamNetworkSvg");
+  if(!svg || !svg.getAttribute("viewBox")){
+    alert("Network map belum siap. Pilih nama terlebih dahulu.");
+    return;
+  }
+
+  try{
+    let vb = svg.getAttribute("viewBox").split(/\s+/).map(Number);
+    let w = vb[2], h = vb[3];
+    if(!w || !h){
+      alert("Ukuran network map tidak terbaca. Coba pilih ulang nama lalu export lagi.");
+      return;
+    }
+
+    // Klon SVG + sisipkan style eksplisit (warna hex, bukan var()) agar tampil benar saat dirender sebagai gambar mandiri.
+    let clone = svg.cloneNode(true);
+    clone.setAttribute("width", w);
+    clone.setAttribute("height", h);
+    clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    clone.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+
+    let styleEl = document.createElementNS("http://www.w3.org/2000/svg", "style");
+    styleEl.textContent = `
+      .net-edge{ fill:none; stroke:#FFE7C9; stroke-width:1.6; }
+      .net-edge.net-edge-selected{ stroke:#FF9644; stroke-width:2.2; }
+      .net-node-circle{ stroke:#FFFFFF; stroke-width:2; }
+      .net-node-circle.net-root{ fill:#562F00; }
+      .net-node-circle.net-ketua{ fill:#FF9644; }
+      .net-node-circle.net-anggota{ fill:#FFCE99; }
+      .net-node-label{ font-family:Inter,sans-serif; font-size:12px; font-weight:700; fill:#3a1f00; }
+      .net-node-label.net-root-label{ font-weight:800; fill:#562F00; }
+      .net-node-label-in{ font-family:Inter,sans-serif; font-weight:700; letter-spacing:0.2px; }
+      .net-node-label-in-light{ fill:#FFFDF1; }
+      .net-node-label-in-dark{ fill:#5c3a12; }
+      .net-root-label-in{ font-weight:800; }
+      .net-edge-label{ font-family:Inter,sans-serif; font-size:9.5px; }
+      .net-edge-label-ik{ fill:#a8590f; font-weight:700; }
+      .net-edge-label-rk{ fill:#5c6b3f; font-weight:700; }
+    `;
+    clone.insertBefore(styleEl, clone.firstChild);
+
+    let svgData = new XMLSerializer().serializeToString(clone);
+    // pakai data-URI (base64) alih-alih blob URL -- jauh lebih konsisten lintas-browser untuk konversi SVG -> canvas
+    let svg64 = window.btoa(unescape(encodeURIComponent(svgData)));
+    let imageSrc = "data:image/svg+xml;base64," + svg64;
+
+    let img = new Image();
+    img.onload = function(){
+      try{
+        let scale = 2; // resolusi lebih tajam
+        let canvas = document.createElement("canvas");
+        canvas.width = w * scale;
+        canvas.height = h * scale;
+        let ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#FFFDF1";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        canvas.toBlob(function(blob){
+          if(!blob){
+            alert("Gagal membuat file JPG dari network map.");
+            return;
+          }
+          saveAs(blob, "SIVERA_Network_Map.jpg");
+        }, "image/jpeg", 0.95);
+      } catch(err){
+        console.error("exportTeamNetworkJPG - gagal menggambar ke canvas:", err);
+        alert("Gagal membuat gambar network map (canvas). Detail error ada di console browser.");
+      }
+    };
+    img.onerror = function(err){
+      console.error("exportTeamNetworkJPG - gagal load image dari SVG:", err);
+      alert("Gagal memuat network map sebagai gambar. Coba refresh halaman lalu export lagi.");
+    };
+    img.src = imageSrc;
+  } catch(err){
+    console.error("exportTeamNetworkJPG - error:", err);
+    alert("Terjadi kesalahan saat menyiapkan export JPG. Detail error ada di console browser.");
+  }
+}
+
+/* ===== TEAM INTERACTION: CROSS TAB (matriks Ketua-Anggota antar nama terpilih) ===== */
+/* Sel (i, j) = Deskripsi IK karena i adalah Ketua Tim dari j.
+   Sel (j, i) = Deskripsi RK karena j adalah Anggota Tim di bawah i (pada IK yang sama).
+   Diagonal (i, i) dikosongkan. */
+function renderTeamCrossTab(names, edges){
+  const table = document.getElementById("teamCrossTabTable");
+  if(!table) return;
+
+  if(!names || names.length === 0){
+    table.innerHTML = `<tbody><tr><td class="team-hint" style="border:none; padding:14px;">Pilih satu atau beberapa nama di atas untuk melihat matriks interaksinya.</td></tr></tbody>`;
+    lastTeamCrossTab = { names: [], matrix: {} };
+    return;
+  }
+  if(names.length < 2){
+    table.innerHTML = `<tbody><tr><td class="team-hint" style="border:none; padding:14px;">Pilih minimal 2 nama supaya matriks silang (cross tab) dapat ditampilkan.</td></tr></tbody>`;
+    lastTeamCrossTab = { names: names.slice(), matrix: {} };
+    return;
+  }
+
+  let sortedNames = names.slice().sort((a,b)=> a.localeCompare(b));
+  let nameSet = new Set(sortedNames);
+
+  // matrix[i][j] = { ikList:[], rkList:[] }
+  let matrix = {};
+  sortedNames.forEach(i=>{
+    matrix[i] = {};
+    sortedNames.forEach(j=>{
+      if(i !== j) matrix[i][j] = { ikList: [], rkList: [] };
     });
   });
 
-  leafNodes.forEach(ln=>{
-    leafBoxesHtml += `
-      <g>
-        <title>${escapeHtml(ln.label)}</title>
-        <rect class="mm-leaf-box" x="${leafX}" y="${ln.y - leafH_box/2}" width="${leafW}" height="${leafH_box}" rx="7"></rect>
-        <text class="mm-leaf-text" x="${leafX + 10}" y="${ln.y + 4}">${escapeHtml(truncate(ln.label, 30))}</text>
-      </g>`;
+  (edges || []).forEach(e=>{
+    if(!nameSet.has(e.from) || !nameSet.has(e.to) || e.from === e.to) return;
+    if(!matrix[e.from][e.to].ikList.includes(e.ik)) matrix[e.from][e.to].ikList.push(e.ik);
+    if(e.rk && !matrix[e.to][e.from].rkList.includes(e.rk)) matrix[e.to][e.from].rkList.push(e.rk);
   });
 
-  let rootHtml = `
-    <g>
-      <title>${escapeHtml(ketua)}</title>
-      <rect class="mm-root-box" x="${rootX}" y="${rootY - rootH/2}" width="${rootW}" height="${rootH}" rx="10"></rect>
-      <text class="mm-root-text" x="${rootX + 12}" y="${rootY - 2}">👑 Ketua Tim</text>
-      <text class="mm-root-text" x="${rootX + 12}" y="${rootY + 14}">${escapeHtml(truncate(ketua, 24))}</text>
-    </g>`;
+  lastTeamCrossTab = { names: sortedNames, matrix };
 
-  svg.setAttribute("viewBox", `0 0 ${svgW} ${totalHeight}`);
-  svg.setAttribute("width", "100%");
-  svg.setAttribute("height", Math.min(totalHeight, 460));
-  svg.innerHTML = linksHtml + rootHtml + rkBoxesHtml + leafBoxesHtml;
+  let headerHtml = `<th class="crosstab-corner">Ketua \\ Anggota</th>` +
+    sortedNames.map(n=>`<th title="${escapeHtml(n)}">${escapeHtml(truncateWords(n,2))}</th>`).join("");
+
+  let bodyHtml = sortedNames.map(i=>{
+    let cells = sortedNames.map(j=>{
+      if(i === j) return `<td class="crosstab-diag">—</td>`;
+      let cell = matrix[i][j];
+      let parts = "";
+      if(cell.ikList.length) parts += cell.ikList.map(t=>`<p class="crosstab-cell-ik" title="${escapeHtml(t)}">IK: ${escapeHtml(t)}</p>`).join("");
+      if(cell.rkList.length) parts += cell.rkList.map(t=>`<p class="crosstab-cell-rk" title="${escapeHtml(t)}">RK: ${escapeHtml(t)}</p>`).join("");
+      if(!parts) return `<td class="crosstab-empty">-</td>`;
+      return `<td>${parts}</td>`;
+    }).join("");
+    return `<tr><th title="${escapeHtml(i)}">${escapeHtml(truncateWords(i,2))}</th>${cells}</tr>`;
+  }).join("");
+
+  table.innerHTML = `<thead><tr>${headerHtml}</tr></thead><tbody>${bodyHtml}</tbody>`;
+}
+
+function exportTeamCrossTabExcel(){
+  let { names, matrix } = lastTeamCrossTab;
+  if(!names || names.length < 2){
+    alert("Pilih minimal 2 nama terlebih dahulu untuk export matriks cross tab.");
+    return;
+  }
+
+  let aoa = [];
+  aoa.push(["Ketua \\ Anggota", ...names]);
+  names.forEach(i=>{
+    let row = [i];
+    names.forEach(j=>{
+      if(i === j){ row.push("-"); return; }
+      let cell = matrix[i][j];
+      let text = [];
+      if(cell.ikList.length) text.push("IK: " + cell.ikList.join(" | "));
+      if(cell.rkList.length) text.push("RK: " + cell.rkList.join(" | "));
+      row.push(text.length ? text.join("\n") : "-");
+    });
+    aoa.push(row);
+  });
+
+  let ws = XLSX.utils.aoa_to_sheet(aoa);
+  ws["!cols"] = [{wch:28}, ...names.map(()=>({wch:35}))];
+
+  let wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Cross Tab Interaksi");
+
+  let buf = XLSX.write(wb, { bookType:"xlsx", type:"array" });
+  saveAs(new Blob([buf], { type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8" }), "SIVERA_CrossTab_Interaksi_Tim.xlsx");
 }
 
 /* RANKING UNIK */
